@@ -1,0 +1,81 @@
+pom.xml explanation
+each pom inherits from a parent pom. if it's not mentioned in the pom itself, the pom inherits from super pom (like Object class in java).
+to look at the super pom we must go to the "Effective POM" tab in the pom.xml. all of the defaults definitions comes from the super pom.
+we can override the defaults in our pom but it's not recommended.
+
+1. groupId - a package that will be part of the artifact id and form a name for the project
+2. artifactId - the project name
+3. version - the version of the project. when the version is <version number>-SNAPSHOT that means that the project is still developed.
+	after the project is done the version will be only <version number>.
+4. packaging - how this project will be packaged. for example a jar, war, ear. if the packaging is defined as "pom", then this pom
+	acts as a parent pom.
+5. dependency - when defining a dependency, maven will bring also the transitive dependencies, meaning the dependencies of the dependencies.
+	to see which dependency is bringing a specific transitive dependencies, we need to go to the "dependency hierarchy" in the pom.xml
+	5.1. exclusion - if we want to exclude a transitive dependency. for example:
+	
+		<dependency>
+			<groupId>amdocs.cust.portfolio</groupId>
+			<artifactId>AmdocsPortfolioServicesCommon</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>amdocs.bss.crm</groupId>
+					<artifactId>AmdocsCrmRetailServices</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+	5.2 version - the version of the dependency. I can use a different format to mention what I want.
+		<version>[4.1,]</version> - bring any version which is higher than 4.1 (include 4.1)
+		<version>[,4.1]</version> - bring any version which is lower than 4.1 (include 4.1)
+		<version>[,4.1)</version> - bring any version which is lower than 4.1 (not include 4.1)
+		<version>(4.1,4.4)</version> - bring any version which is in between 4.1 and 4.4 (not include 4.1 or 4.4)
+	5.3 scope - specify where this dependency should be available.
+		"compile" - only available at compliation time
+		"provided" - this means that this jar is already a part of the server that I am deploying the project in
+			so it doesn't need to be part of the packaging
+		"runtime" - this dependency will not be available when compiling the code. this means that I want to use only in interfaces 
+			in my code and not in implementations. so if I am using in implementation on the code, the compilation will break.
+		"test" - available only for test folder not for src folder
+6. build - defines with which plugins we will build the code.
+7. module - in case it's a parent pom, its children are defined inside of a module tag.
+8. property - helps us centralize the configuration in one place. for example: if I want to define the same version for all of the 
+	dependencies I have. then I will add this code:
+	
+	<properties>
+		<spring-core-version>4.1.6.RELEASE</spring-core-version>
+	</properties>
+	
+	to use this property, all I need to do is to define this in any version tag I want:
+	
+	<version>${spring-core-version}</version>
+	
+maven local repository
+all of the dependencies are stored in the maven local repository when defining them on pom.xml/
+
+run tomcat from maven
+in order to create a web project, we can define the packaging to be a war, download tomcat server, deploy that war in that tomcat server 
+and run that tomcat server in few simple steps:
+1. add the following plugin to build tag:
+	<plugin>
+		<groupId>org.apache.tomcat.maven</groupId>
+		<artifactId>tomcat7-maven-plugin</artifactId>
+		<version>2.2</version>
+		<configuration>
+			<warFile>target/example.war</warFile>
+			<path>/</path>
+			<contextReloadable>true</contextReloadable>
+		</configuration>
+	</plugin>
+2. run the command: "mvn tomcat7:run"
+3. to stop the server all we need to do is ctrl+c
+
+commands
+- "mvn -X clean install": prints debug information from maven (this is good to track exceptions in maven)
+- "mvn effective:pom": prints the entire pom including the super pom
+- "mvn dependency:tree": shows the dependencies that are dependent on the pom.xml that is located where we run the command from
+- "mvn dependency:resources": downloads the dependencies java sources
+- "mvn help:effective-settings": shows the maven local repository location
+- "mvn archetype:generate": returns a list of all of the pom.xmls types that van be used to create projects with. those basocally
+	are archetypes of predefined default projects that use different open source libraries
+- "mvn clean install -DskipTests": the usual "mvn clean install" command only to skip the tests
+- "mvn --help": shows all of the commands available in maven
