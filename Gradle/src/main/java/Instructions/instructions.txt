@@ -1,0 +1,21 @@
+commands (in CMD)
+"gradle tasks" - to see what are the default tasks of gradle
+"gradle tasks --all" - to see all tasks in more details
+"gradle tasks" (when we run it in the project directory) - to see what are the default tasks of gradle in my project
+"gradle tasks --all" (when we run it in the project directory) - to see all tasks in more details in my project
+"gradle <task name>" - to run a task
+"gradle <task name> <task name>" - to run 2 tasks
+"gradle <task name> -P <property name>" - to run task with specific property
+"gradle dependencies" - shows all of the dependencies in the project
+"gradle test" - to run the tests inside my project
+
+task dependencies:
+1. dependsOn
+2. finalizedBy
+3. shouldRunAfter
+
+properties:
+there are 3 ways we can use properties:
+1. properties file inside the resources folder
+2. as a command line argument like "gradle -P someProperty="some property" <task name>"
+3. define in the ext block inside the build.gradle file

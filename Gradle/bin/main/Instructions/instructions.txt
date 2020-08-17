@@ -1,0 +1,9 @@
+commands (in CMD)
+"gradle tasks" - to see what are the default tasks of gradle
+"gradle tasks --all" - to see all tasks in more details
+"gradle tasks" (when we run it in the project directory) - to see what are the default tasks of gradle in my project
+"gradle tasks --all" (when we run it in the project directory) - to see all tasks in more details in my project
+"gradle <task name>" - to run a task
+"gradle <task name> -P <property name>" - to run task with specific property
+
+task dependencies
