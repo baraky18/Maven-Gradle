@@ -79,3 +79,4 @@ commands
 	are archetypes of predefined default projects that use different open source libraries
 - "mvn clean install -DskipTests": the usual "mvn clean install" command only to skip the tests
 - "mvn --help": shows all of the commands available in maven
+- "tree": show all of the components of maven in the folder we are in in shape of tree
